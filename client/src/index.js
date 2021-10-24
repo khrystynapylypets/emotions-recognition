@@ -1,12 +1,19 @@
+/* Application entry point.
+ * Import the store.
+ * Render react application to DOM.
+ */
+
 import React from 'react';
-import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { Provider } from 'react-redux';
+import store from './redux';
+
+import routes from './routes';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider>
-      <App />
+    <Provider store={store}>
+      {routes}
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
