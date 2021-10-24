@@ -1,13 +1,11 @@
 import React from 'react';
-import { PublicLayoutContainer, Container } from '../../styledComponents';
+import { Container } from '../../styledComponents';
 
-export const PublicLayout = ({ children }) => {
+const PublicLayout = ({ children }) => {
   return (
-    <PublicLayoutContainer>
-      <Container>
-        {children}
-      </Container>
-    </PublicLayoutContainer>
+    <Container>
+      {children}
+    </Container>
   );
 };
 

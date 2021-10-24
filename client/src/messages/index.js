@@ -1,4 +1,5 @@
 export default {
+  title: 'Emotions recognition',
   auth: {
     signUp: {
       title: 'Sign Up',
@@ -40,11 +41,50 @@ export default {
       cancel: 'Cancel',
     },
     errors: {
-      required: 'Value is required',
       emailError: 'Email address is incorrect',
       passwordError: 'Password is incorrect',
     },
     noAccount: 'Do not have an account yet?',
     alreadyHasAccount: 'Already have an account?',
+  },
+  menu: {
+    openButton: 'Menu',
+    items: {
+      gallery: 'Gallery',
+      profile: 'Profile',
+      logOutButton: 'Log out',
+    },
+  },
+  gallery: {
+    title: 'Video gallery',
+    buttons: {
+      upload: 'Upload video',
+    },
+    empty: 'Gallery is empty, please upload video',
+  },
+  uploadVideoPanel: {
+    title: 'Upload video',
+    description: 'Please fill in all needed fields to upload video to the gallery',
+    fields: {
+      name: {
+        title: 'Title',
+        placeholder: 'Please enter video title',
+      },
+      description: {
+        title: 'Description',
+        placeholder: 'Please enter your video description',
+      },
+      videoFile: {
+        title: 'Video file',
+        placeholder: 'Select the file here!',
+      },
+    },
+    buttons: {
+      save: 'Save',
+      cancel: 'Cancel',
+    },
+  },
+  generalErrors: {
+    required: 'Values id required',
   },
 };
