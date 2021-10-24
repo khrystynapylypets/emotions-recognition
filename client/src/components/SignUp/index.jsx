@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInputField, Heading, Button, Strong, Link, Paragraph } from 'evergreen-ui';
+import { TextInputField, Heading, Button, Strong, Link, Paragraph, Pane } from 'evergreen-ui';
 import PublicLayout from '../Layout/PublicLayout';
 import { AuthPanel } from '../../styledComponents';
 
@@ -7,22 +7,39 @@ import { message } from '../../helpers';
 import { MIN_PASSWORD, path } from '../../utils/constants';
 import { authValidator } from '../../utils/validation';
 import { useTextField } from '../../customHooks/useFormField';
+import theme from '../../utils/theme';
 
 const SignUp = () => {
-  const { value: firstNameValue, onChange: onFirstNameChange, onReset: onFirstNameReset,
-    onValidate: onFirstNameValidate, errorMessage: firstNameErrorMessage,
+  const {
+    value: firstNameValue,
+    onChange: onFirstNameChange,
+    onReset: onFirstNameReset,
+    onValidate: onFirstNameValidate,
+    errorMessage: firstNameErrorMessage,
   } = useTextField({ initialValue: '', resetValue: '', validationFunction: authValidator['name'] });
 
-  const { value: lastNameValue, onChange: onLastNameChange, onReset: onLastNameReset,
-    onValidate: onLastNameValidate, errorMessage: lastNameErrorMessage,
+  const {
+    value: lastNameValue,
+    onChange: onLastNameChange,
+    onReset: onLastNameReset,
+    onValidate: onLastNameValidate,
+    errorMessage: lastNameErrorMessage,
   } = useTextField({ initialValue: '', resetValue: '', validationFunction: authValidator['name'] });
 
-  const { value: emailValue, onChange: onEmailChange, onReset: onEmailReset,
-    onValidate: onEmailValidate, errorMessage: emailErrorMessage,
+  const {
+    value: emailValue,
+    onChange: onEmailChange,
+    onReset: onEmailReset,
+    onValidate: onEmailValidate,
+    errorMessage: emailErrorMessage,
   } = useTextField({ initialValue: '', resetValue: '', validationFunction: authValidator['email'] });
 
-  const { value: passwordValue, onChange: onPasswordChange, onReset: onPasswordReset,
-    onValidate: onPasswordValidate, errorMessage: passwordErrorMessage,
+  const {
+    value: passwordValue,
+    onChange: onPasswordChange,
+    onReset: onPasswordReset,
+    onValidate: onPasswordValidate,
+    errorMessage: passwordErrorMessage,
   } = useTextField({ initialValue: '', resetValue: '', validationFunction: authValidator['password'] });
 
   const onFormReset = () => {
@@ -50,13 +67,16 @@ const SignUp = () => {
   return (
     <PublicLayout>
       <AuthPanel
-        border='default'
-        borderRad={5}
+        boxShadow={theme.boxShadow}
       >
-        <Heading size={700} marginBottom={30}>
+        <Heading
+          size={700}
+          marginBottom={30}
+          color={theme.textColor}
+        >
           {message('auth.signUp.title')}
         </Heading>
-        <div>
+        <Pane>
           <TextInputField
             required
             label={message('auth.signUp.fields.firstName.title')}
@@ -95,8 +115,8 @@ const SignUp = () => {
             validationMessage={passwordErrorMessage}
             isInvalid={Boolean(passwordErrorMessage)}
           />
-        </div>
-        <div>
+        </Pane>
+        <Pane>
           <Button
             appearance='primary'
             intent='success'
@@ -106,7 +126,7 @@ const SignUp = () => {
             {message('auth.buttons.save')}
           </Button>
           <Button onClick={onFormReset}>{message('auth.buttons.cancel')}</Button>
-        </div>
+        </Pane>
         <Paragraph marginTop={40} textAlign='center'>
           <Strong>{message('auth.alreadyHasAccount')}</Strong>
           &nbsp;

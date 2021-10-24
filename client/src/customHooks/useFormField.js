@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useTextField = ({ initialValue, resetValue, validationFunction }) => {
+export const useTextField = ({ initialValue, resetValue, validationFunction = null }) => {
   const [ value, setValue ] = useState(initialValue);
   const [ errorMessage, setErrorMessage ] = useState(null);
 
@@ -10,6 +10,10 @@ export const useTextField = ({ initialValue, resetValue, validationFunction }) =
   };
 
   const onValidate = () => {
+    if (!validationFunction) {
+      return null;
+    }
+
     const errorMessage = validationFunction(value);
 
     setErrorMessage(errorMessage);

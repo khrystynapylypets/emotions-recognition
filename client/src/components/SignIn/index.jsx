@@ -1,19 +1,28 @@
 import React from 'react';
-import { TextInputField, Heading, Button, Link, Paragraph, Strong } from 'evergreen-ui';
+import { TextInputField, Heading, Button, Link, Paragraph, Strong, Pane } from 'evergreen-ui';
 import { AuthPanel } from '../../styledComponents';
 
 import PublicLayout from '../Layout/PublicLayout';
 import { useTextField } from '../../customHooks/useFormField';
 import { message } from '../../helpers';
 import { path } from '../../utils/constants';
+import theme from '../../utils/theme';
 import { authValidator } from '../../utils/validation';
 
 const SignIn = () => {
-  const { value: emailValue, onChange: onEmailChange, onReset: onEmailReset, onValidate: onEmailValidate,
+  const {
+    value: emailValue,
+    onChange: onEmailChange,
+    onReset: onEmailReset,
+    onValidate: onEmailValidate,
     errorMessage: emailErrorMessage,
   } = useTextField({ initialValue: '', resetValue: '', validationFunction: authValidator['email'] });
 
-  const { value: passwordValue, onChange: onPasswordChange, onReset: onPasswordReset, onValidate: onPasswordValidate,
+  const {
+    value: passwordValue,
+    onChange: onPasswordChange,
+    onReset: onPasswordReset,
+    onValidate: onPasswordValidate,
     errorMessage: passwordErrorMessage,
   } = useTextField({ initialValue: '', resetValue: '', validationFunction: authValidator['password'] });
 
@@ -38,12 +47,16 @@ const SignIn = () => {
   return (
     <PublicLayout>
       <AuthPanel
-        border='default'
+        boxShadow={theme.boxShadow}
       >
-        <Heading size={700} marginBottom={30}>
+        <Heading
+          size={700}
+          marginBottom={30}
+          color={theme.textColor}
+        >
           {message('auth.signIn.title')}
         </Heading>
-        <div>
+        <Pane>
           <TextInputField
             required
             label={message('auth.signIn.fields.email.title')}
@@ -63,8 +76,8 @@ const SignIn = () => {
             validationMessage={passwordErrorMessage}
             isInvalid={Boolean(passwordErrorMessage)}
           />
-        </div>
-        <div>
+        </Pane>
+        <Pane>
           <Button
             appearance='primary'
             intent='success'
@@ -74,7 +87,7 @@ const SignIn = () => {
             {message('auth.buttons.save')}
           </Button>
           <Button onClick={onFormReset}>{message('auth.buttons.cancel')}</Button>
-        </div>
+        </Pane>
         <Paragraph marginTop={40} textAlign='center'>
           <Strong>{message('auth.noAccount')}</Strong>
           &nbsp;

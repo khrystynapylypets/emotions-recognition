@@ -7,7 +7,7 @@ const checkIfValueIsEmpty = (value) => {
     return null;
   }
 
-  return message('auth.errors.required');
+  return message('generalErrors.required');
 };
 
 export const authValidator = {
@@ -34,4 +34,9 @@ export const authValidator = {
       return message('auth.errors.passwordError');
     }
   },
+};
+
+export const uploadVideoValidator = {
+  'title': checkIfValueIsEmpty,
+  'file': checkIfValueIsEmpty,
 };

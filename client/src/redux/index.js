@@ -10,5 +10,5 @@ const rootReducer = {
 
 export default createStore(
   combineReducers(rootReducer),
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(thunk)),
 );
