@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Pane } from 'evergreen-ui';
+import { NavLink } from 'react-router-dom';
 import theme from '../utils/theme';
 
 export const Container = styled.div`
@@ -16,4 +17,9 @@ export const AuthPanel = styled(Pane)`
 
 export const PrivateLayoutContainer = styled(Container)`
   padding: 40px 0;
+`;
+
+export const StyledLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${theme.textColor};
 `;
