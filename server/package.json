@@ -6,6 +6,7 @@
     "start": "nodemon index.js --exec babel-node",
     "lint": "eslint ."
   },
+  "proxy": "http://localhost:9002/",
   "dependencies": {
     "@babel/eslint-parser": "^7.15.8",
     "babel-eslint": "^10.0.3",
