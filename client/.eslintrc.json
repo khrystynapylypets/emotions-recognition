@@ -38,7 +38,6 @@
       "beforeColon": false
     }],
     "keyword-spacing": 2,
-    "max-params": 2,
     "newline-after-var": [2, "always"],
     "no-lonely-if": 2,
     "no-mixed-operators": 2,
