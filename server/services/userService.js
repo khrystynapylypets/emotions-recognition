@@ -15,22 +15,30 @@ export default class UserService {
     return bcrypt.hashSync(originalPassword, salt);
   };
 
+  comparePassword = (password, hashedPassword) => bcrypt.compareSync(password, hashedPassword);
+
   isEmpty = (value) => !value || !trim(value);
 
-  validateUserData = (userData) => {
-    const { firstName, lastName, email, password } = userData;
+  isEmailValid = (value) => !this.isEmpty(value) && regex['email'].test(value);
 
-    if (this.isEmpty(firstName) || this.isEmpty(lastName) || this.isEmpty(email) || this.isEmpty(password)) {
-      throw new ErrorHandler(404, 'All values are required.');
-    }
+  isPasswordValid = (value) => !this.isEmpty(value) && value.length >= MIN_PASSWORD;
 
-    if (password.length < MIN_PASSWORD) {
-      throw new ErrorHandler(404, `Password should have at least ${MIN_PASSWORD} characters.`);
-    }
-
-    if (!(regex['email'].test(email))) {
+  validateEmailAndPassword = (email, password) => {
+    if (!this.isEmailValid(email)) {
       throw new ErrorHandler(404, 'Email is invalid.');
     }
+
+    if (!this.isPasswordValid(password)) {
+      throw new ErrorHandler(404, `Password should have at least ${MIN_PASSWORD} characters.`);
+    }
+  };
+
+  validateUserData = ({ firstName, lastName, email, password }) => {
+    if (this.isEmpty(firstName) || this.isEmpty(lastName)) {
+      throw new ErrorHandler(404, 'First name and last name are required.');
+    }
+
+    this.validateEmailAndPassword(email, password);
   };
 
   createUser = (userData) => {
@@ -44,4 +52,24 @@ export default class UserService {
       password: hashedPassword,
     });
   };
+
+  findUser = async (userData) => {
+    const { email, password } = userData;
+
+    this.validateEmailAndPassword(email, password);
+
+    const existingUser = await this.userDataAccessInstance.findUserByEmail(email);
+
+    if (!existingUser) {
+      throw new ErrorHandler(404, 'User with this email does not exist.');
+    }
+
+    const isPasswordMatched = this.comparePassword(password, existingUser.password);
+
+    if (!isPasswordMatched) {
+      throw new ErrorHandler(404, 'Password is not valid.');
+    }
+
+    return existingUser;
+  }
 }
