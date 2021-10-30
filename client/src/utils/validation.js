@@ -31,7 +31,7 @@ export const authValidator = {
     }
 
     if (value.length < MIN_PASSWORD) {
-      return message('auth.errors.passwordError');
+      return message('auth.errors.passwordError', { number: MIN_PASSWORD });
     }
   },
 };

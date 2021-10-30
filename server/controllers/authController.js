@@ -34,7 +34,6 @@ export const signIn = async (req, res, next) => {
     const token = authServiceInstance.encodeJWTToken(newUser._id, envConfig.JWT_KEY, envConfig.TOKEN_TIME);
 
     return res
-      .header('access-token', token)
       .status(200)
       .send({
         user: {
@@ -43,6 +42,7 @@ export const signIn = async (req, res, next) => {
           lastName: newUser.lastName,
           email: newUser.email,
         },
+        accessToken: token,
       });
   } catch (error) {
     next(error);

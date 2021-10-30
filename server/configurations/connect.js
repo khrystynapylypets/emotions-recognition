@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import envConfig from './envConfig';
 
-export default async () => {
+const connectToDataBase = async () => {
   try {
     await mongoose.connect(envConfig.DATABASE_URL, { useNewUrlParser: true });
     console.log(`Successfully connected to database!`);
@@ -10,3 +10,5 @@ export default async () => {
     throw error;
   }
 };
+
+export default connectToDataBase;

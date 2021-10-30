@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 
-export default class AuthService {
+class AuthService {
   encodeJWTToken = (id, secret, expTime) => {
     return jwt.sign({ id }, secret, { expiresIn: `${expTime}h` });
   };
 }
+
+export default AuthService;

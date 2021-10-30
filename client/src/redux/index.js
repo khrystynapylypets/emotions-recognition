@@ -8,7 +8,9 @@ const rootReducer = {
   auth: authReducer,
 };
 
-export default createStore(
+const store = createStore(
   combineReducers(rootReducer),
   composeWithDevTools(applyMiddleware(thunk)),
 );
+
+export default store;
