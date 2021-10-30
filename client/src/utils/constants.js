@@ -11,3 +11,12 @@ export const path = {
   GALLERY: '/gallery',
   PROFILE: '/profile',
 };
+
+export const statusCodes = {
+  UNAUTHORIZED: 401,
+  OK: 200,
+};
+
+export const ERROR_MESSAGE_DISPLAYING_DURATION = 10;
+
+export const ACCESS_TOKEN = 'accessToken';

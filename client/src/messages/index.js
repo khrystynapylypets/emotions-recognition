@@ -42,10 +42,16 @@ export default {
     },
     errors: {
       emailError: 'Email address is incorrect',
-      passwordError: 'Password is incorrect',
+      passwordError: 'Password should contain at least {number} characters',
     },
     noAccount: 'Do not have an account yet?',
     alreadyHasAccount: 'Already have an account?',
+    request: {
+      messages: {
+        creationSuccess: 'User {firstName} {lastName} was successfully created.',
+        generalError: 'Something goes wrong. Please try again!',
+      },
+    },
   },
   menu: {
     openButton: 'Menu',
@@ -85,6 +91,6 @@ export default {
     },
   },
   generalErrors: {
-    required: 'Values id required',
+    required: 'Value is required',
   },
 };

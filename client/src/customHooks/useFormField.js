@@ -17,6 +17,7 @@ export const useTextField = ({ initialValue, resetValue, validationFunction = nu
     const errorMessage = validationFunction(value);
 
     setErrorMessage(errorMessage);
+    return errorMessage;
   };
 
   const onChange = (newValue) => {

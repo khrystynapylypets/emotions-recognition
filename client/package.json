@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.24.0",
     "dotenv": "^10.0.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "evergreen-ui": "^6.5.1",
@@ -17,7 +18,8 @@
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,6 +28,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .jsx --ext .js src"
   },
+  "proxy": "http://localhost:9002/",
   "eslintConfig": {
     "extends": [
       "react-app",

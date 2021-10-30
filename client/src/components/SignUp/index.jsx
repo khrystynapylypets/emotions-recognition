@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import { TextInputField, Heading, Button, Strong, Link, Paragraph, Pane } from 'evergreen-ui';
 import PublicLayout from '../Layout/PublicLayout';
 import { AuthPanel } from '../../styledComponents';
@@ -7,9 +9,14 @@ import { message } from '../../helpers';
 import { MIN_PASSWORD, path } from '../../utils/constants';
 import { authValidator } from '../../utils/validation';
 import { useTextField } from '../../customHooks/useFormField';
+import authActions from '../../redux/actions/auth';
 import theme from '../../utils/theme';
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const isSigningUp = useSelector((state) => state.auth.isSigningUp);
+
   const {
     value: firstNameValue,
     onChange: onFirstNameChange,
@@ -50,18 +57,33 @@ const SignUp = () => {
   };
 
   const validateForm = () => {
-    onFirstNameValidate();
-    onLastNameValidate();
-    onEmailValidate();
-    onPasswordValidate();
+    const firstNameError = onFirstNameValidate(),
+      lastNameError = onLastNameValidate(),
+      emailError = onEmailValidate(),
+      passwordError = onPasswordValidate();
+
+    return firstNameError || lastNameError || emailError || passwordError;
   };
 
   const onFormSave = () => {
-    validateForm();
+    const hasError = validateForm();
 
-    if (firstNameErrorMessage || lastNameErrorMessage || emailErrorMessage || passwordErrorMessage) {
+    if (hasError) {
       return;
     }
+
+    dispatch(authActions.signUpAction({
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+      password: passwordValue,
+      email: emailValue,
+    }))
+      .then(() => {
+        history.push(path.SIGN_IN);
+      })
+      .catch(() => {
+        onPasswordReset();
+      });
   };
 
   return (
@@ -121,11 +143,17 @@ const SignUp = () => {
             appearance='primary'
             intent='success'
             marginRight={15}
+            isLoading={isSigningUp}
             onClick={onFormSave}
           >
             {message('auth.buttons.save')}
           </Button>
-          <Button onClick={onFormReset}>{message('auth.buttons.cancel')}</Button>
+          <Button
+            onClick={onFormReset}
+            isLoading={isSigningUp}
+          >
+            {message('auth.buttons.cancel')}
+          </Button>
         </Pane>
         <Paragraph marginTop={40} textAlign='center'>
           <Strong>{message('auth.alreadyHasAccount')}</Strong>

@@ -4,7 +4,7 @@ import UserDataAccess from '../dataAccess/userDataAccess';
 import { ErrorHandler } from '../error';
 import { saltRounds, MIN_PASSWORD, regex } from '../utils/constants';
 
-export default class UserService {
+class UserService {
   constructor() {
     this.userDataAccessInstance = new UserDataAccess();
   }
@@ -23,7 +23,11 @@ export default class UserService {
 
   isPasswordValid = (value) => !this.isEmpty(value) && value.length >= MIN_PASSWORD;
 
-  validateEmailAndPassword = (email, password) => {
+  validateUserData = ({ firstName, lastName, email, password }) => {
+    if (this.isEmpty(firstName) || this.isEmpty(lastName)) {
+      throw new ErrorHandler(404, 'First name and last name are required.');
+    }
+
     if (!this.isEmailValid(email)) {
       throw new ErrorHandler(404, 'Email is invalid.');
     }
@@ -31,14 +35,6 @@ export default class UserService {
     if (!this.isPasswordValid(password)) {
       throw new ErrorHandler(404, `Password should have at least ${MIN_PASSWORD} characters.`);
     }
-  };
-
-  validateUserData = ({ firstName, lastName, email, password }) => {
-    if (this.isEmpty(firstName) || this.isEmpty(lastName)) {
-      throw new ErrorHandler(404, 'First name and last name are required.');
-    }
-
-    this.validateEmailAndPassword(email, password);
   };
 
   createUser = (userData) => {
@@ -56,8 +52,6 @@ export default class UserService {
   findUser = async (userData) => {
     const { email, password } = userData;
 
-    this.validateEmailAndPassword(email, password);
-
     const existingUser = await this.userDataAccessInstance.findUserByEmail(email);
 
     if (!existingUser) {
@@ -67,9 +61,11 @@ export default class UserService {
     const isPasswordMatched = this.comparePassword(password, existingUser.password);
 
     if (!isPasswordMatched) {
-      throw new ErrorHandler(404, 'Password is not valid.');
+      throw new ErrorHandler(404, 'Password is incorrect.');
     }
 
     return existingUser;
   }
 }
+
+export default UserService;

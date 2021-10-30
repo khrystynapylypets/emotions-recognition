@@ -1,4 +1,4 @@
-export default {
+const theme = {
   containerWidth: '900px',
   authPanelWidth: '400px',
   primaryColor: '#52bd95',
@@ -8,5 +8,6 @@ export default {
   panelColor: '#ffffff',
   textColor: '#474d66',
   boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-
 };
+
+export default theme;

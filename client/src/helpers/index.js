@@ -1,4 +1,5 @@
 import { isNull, isEmpty, replace, toString, get } from 'lodash';
+import { ACCESS_TOKEN } from '../utils/constants';
 import messages from '../messages';
 
 export const message = (messageKey, params) => {
@@ -19,4 +20,8 @@ export const message = (messageKey, params) => {
   return message;
 };
 
-export const getAccessToken = () => null;
+export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN);
+
+export const removeAccessToken = () => localStorage.removeItem(ACCESS_TOKEN);
+
+export const setAccessToken = (accessToken) => localStorage.setItem(ACCESS_TOKEN, accessToken);
