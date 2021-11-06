@@ -11,7 +11,7 @@ export const Container = styled.div`
 export const AuthPanel = styled(Pane)`
   max-width: ${theme.authPanelWidth};
   padding: 25px;
-  margin: 80px auto;
+  margin: 60px auto 0;
   background: ${theme.panelColor};
 `;
 

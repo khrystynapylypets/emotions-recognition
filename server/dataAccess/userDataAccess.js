@@ -1,4 +1,4 @@
-import User from './models/User';
+import User from '../models/User';
 import { ErrorHandler } from '../error';
 
 class UserDataAccess {
@@ -7,13 +7,13 @@ class UserDataAccess {
   createUser = async (userData) => {
     const { email } = userData;
 
-    const existingUser = await this.findUserByEmail(email);
+    const existingRecord = await this.findUserByEmail(email);
 
-    if (existingUser) {
+    if (existingRecord) {
       throw new ErrorHandler(404, 'User with this email already exists.');
     }
 
-    return User.create(userData);
+    await User.create(userData);
   };
 }
 

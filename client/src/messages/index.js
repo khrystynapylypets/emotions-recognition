@@ -1,5 +1,6 @@
 export default {
   title: 'Emotions recognition',
+  logOut: 'Log out',
   auth: {
     signUp: {
       title: 'Sign Up',
@@ -48,17 +49,9 @@ export default {
     alreadyHasAccount: 'Already have an account?',
     request: {
       messages: {
-        creationSuccess: 'User {firstName} {lastName} was successfully created.',
+        creationSuccess: 'User "{firstName} {lastName}" was successfully created.',
         generalError: 'Something goes wrong. Please try again!',
       },
-    },
-  },
-  menu: {
-    openButton: 'Menu',
-    items: {
-      gallery: 'Gallery',
-      profile: 'Profile',
-      logOutButton: 'Log out',
     },
   },
   gallery: {
@@ -67,6 +60,16 @@ export default {
       upload: 'Upload video',
     },
     empty: 'Gallery is empty, please upload video',
+    item: {
+      settings: {
+        detailsPage: 'Open video details page',
+        delete: 'Delete video',
+      },
+    },
+    label: {
+      analyzed: 'Analyzed',
+      notAnalyzed: 'Not analyzed',
+    },
   },
   uploadVideoPanel: {
     title: 'Upload video',
@@ -89,8 +92,15 @@ export default {
       save: 'Save',
       cancel: 'Cancel',
     },
+    request: {
+      messages: {
+        uploadingSuccess: 'Video "{name}" was successfully uploaded.',
+        deletingSuccess: 'Video "{name}" was successfully deleted.',
+      },
+    },
   },
   generalErrors: {
+    unexpected: 'Something goes wrong. Please try again!',
     required: 'Value is required',
   },
 };

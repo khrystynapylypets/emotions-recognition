@@ -1,13 +1,26 @@
 import React from 'react';
-import { Heading, Pane, PredictiveAnalysisIcon } from 'evergreen-ui';
-import Menu from '../Menu';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { Heading, Pane, PredictiveAnalysisIcon, Button, LogOutIcon } from 'evergreen-ui';
 import { StyledLink } from '../../styledComponents';
 
 import theme from '../../utils/theme';
 import { path } from '../../utils/constants';
-import { message } from '../../helpers';
+import { message, removeAccessToken } from '../../helpers';
+
+import authActions from '../../redux/actions/auth';
 
 const Header = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(authActions.signOut());
+    removeAccessToken();
+
+    history.push(path.SIGN_IN);
+  };
+
   return (
     <Pane
       display='flex'
@@ -34,8 +47,14 @@ const Header = () => {
           </Heading>
         </StyledLink>
       </Pane>
-      <Pane marginRight={100}>
-        <Menu />
+      <Pane marginRight={50}>
+        <Button
+          iconBefore={LogOutIcon}
+          onClick={logOut}
+          size='large'
+        >
+          {message('logOut')}
+        </Button>
       </Pane>
     </Pane>
   );
