@@ -33,18 +33,7 @@ class VideoService {
 
   getAllVideosByUserId = (userId) => this.videoDataAccessInstance.findVideosDataByUserId(userId);
 
-  deleteVideo = async (id) => {
-    const currentVideo = await this.videoDataAccessInstance.findVideoData(id);
-
-    if (!currentVideo) {
-      throw new ErrorHandler(404, `Video with "${id}" id does not exist.`);
-    }
-
-    const { url } = currentVideo;
-
-    fs.unlinkSync(url);
-    return this.videoDataAccessInstance.deleteVideoData(id);
-  };
+  deleteVideo = async (id) => this.videoDataAccessInstance.deleteVideoData(id);
 }
 
 export default VideoService;

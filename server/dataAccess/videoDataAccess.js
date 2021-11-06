@@ -22,7 +22,18 @@ class VideoDataAccess {
 
   findVideoData = (id) => Video.findOne({ _id: id });
 
-  deleteVideoData = (id) => Video.deleteOne({ _id: id });
+  deleteVideoData = async (id) => {
+    const existingRecord = await this.findVideoData(id);
+
+    if (!existingRecord) {
+      throw new ErrorHandler(404, `Video with "${id}" id does not exist.`);
+    }
+
+    const { url } = existingRecord;
+
+    fs.unlinkSync(url);
+    return Video.deleteOne({ _id: id });
+  };
 }
 
 
