@@ -7,8 +7,12 @@ import { handleError } from './error';
 const app = express();
 
 app.use(express.json());
+
+app.use(express.static(__dirname));
+
 app.use(cors({
   origin: envConfig.FRONT_DOMAIN,
+  exposedHeaders: [ 'access-token' ],
 }));
 
 

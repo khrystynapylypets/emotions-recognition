@@ -107,6 +107,7 @@ const SignUp = () => {
             onChange={({ target }) => onFirstNameChange(target.value)}
             validationMessage={firstNameErrorMessage}
             isInvalid={Boolean(firstNameErrorMessage)}
+            inputHeight={40}
           />
           <TextInputField
             required
@@ -116,6 +117,7 @@ const SignUp = () => {
             onChange={({ target }) => onLastNameChange(target.value)}
             validationMessage={lastNameErrorMessage}
             isInvalid={Boolean(lastNameErrorMessage)}
+            inputHeight={40}
           />
           <TextInputField
             required
@@ -125,6 +127,7 @@ const SignUp = () => {
             onChange={({ target }) => onEmailChange(target.value)}
             validationMessage={emailErrorMessage}
             isInvalid={Boolean(emailErrorMessage)}
+            inputHeight={40}
           />
           <TextInputField
             type='password'
@@ -136,6 +139,7 @@ const SignUp = () => {
             onChange={({ target }) => onPasswordChange(target.value)}
             validationMessage={passwordErrorMessage}
             isInvalid={Boolean(passwordErrorMessage)}
+            inputHeight={40}
           />
         </Pane>
         <Pane>
@@ -143,6 +147,7 @@ const SignUp = () => {
             appearance='primary'
             intent='success'
             marginRight={15}
+            size='large'
             isLoading={isSigningUp}
             onClick={onFormSave}
           >
@@ -150,7 +155,8 @@ const SignUp = () => {
           </Button>
           <Button
             onClick={onFormReset}
-            isLoading={isSigningUp}
+            disabled={isSigningUp}
+            size='large'
           >
             {message('auth.buttons.cancel')}
           </Button>

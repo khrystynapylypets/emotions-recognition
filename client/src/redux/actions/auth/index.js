@@ -29,6 +29,10 @@ const signInSuccess = () => ({
   type: types.SIGN_IN_SUCCESS,
 });
 
+const signOut = () => ({
+  type: types.SIGN_OUT,
+});
+
 const signUpAction = (userData) => (dispatch) =>
 {
   dispatch(signUp());
@@ -44,7 +48,7 @@ const signUpAction = (userData) => (dispatch) =>
     })
     .catch((error) => {
       const errorMessage = get(error, 'response.data.message',
-        message('auth.request.messages.generalError'));
+        message('generalErrors.unexpected'));
 
       dispatch(signUpFail());
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
@@ -67,7 +71,7 @@ const signInAction = (userData) => (dispatch) =>
     })
     .catch((error) => {
       const errorMessage = get(error, 'response.data.message',
-        message('auth.request.messages.generalError'));
+        message('generalErrors.unexpected'));
 
       dispatch(signInFail());
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
@@ -79,4 +83,5 @@ const signInAction = (userData) => (dispatch) =>
 export default {
   signUpAction,
   signInAction,
+  signOut,
 };

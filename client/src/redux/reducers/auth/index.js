@@ -38,6 +38,10 @@ export const authReducer = (prevState = initialState, action) => {
         ...prevState,
         isSigningIn: false,
       };
+    case types.SIGN_OUT:
+      return {
+        ...initialState,
+      };
     default:
       return prevState;
   }

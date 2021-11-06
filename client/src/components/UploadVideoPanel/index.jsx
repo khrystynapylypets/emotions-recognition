@@ -1,11 +1,18 @@
 import React from 'react';
-import { SideSheet, Paragraph, Pane, Heading, TextInputField, Button, FilePicker } from 'evergreen-ui';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  SideSheet, Paragraph, Pane, Heading, TextInputField, Button, FilePicker, Text, ErrorIcon,
+} from 'evergreen-ui';
 import { useTextField } from '../../customHooks/useFormField';
 import theme from '../../utils/theme';
 import { uploadVideoValidator } from '../../utils/validation';
 import { message } from '../../helpers';
+import galleryActions from '../../redux/actions/gallery';
 
 const UploadVideoPanel = ({ closePanel }) => {
+  const dispatch = useDispatch();
+  const isUploadingVideo = useSelector((state) => state.gallery.isUploadingVideo);
+
   const {
     value: titleValue,
     onChange: onTitleChange,
@@ -37,16 +44,24 @@ const UploadVideoPanel = ({ closePanel }) => {
   const validateForm = () => {
     onTitleValidate();
     onFileValidate();
+
+    const titleError = onTitleValidate(), fileError = onFileValidate();
+
+    return titleError || fileError;
   };
 
   const onFormSave = () => {
-    validateForm();
+    const hasError = validateForm();
 
-    if (titleErrorMessage || fileErrorMessage) {
+    if (hasError) {
       return;
     }
 
-    closePanel();
+    dispatch(galleryActions.uploadVideoAction({
+      name: titleValue,
+      description: descriptionValue,
+      videoFile: fileValue,
+    })).then(() => closePanel()).catch();
   };
 
   return (
@@ -76,12 +91,14 @@ const UploadVideoPanel = ({ closePanel }) => {
           onChange={({ target }) => onTitleChange(target.value)}
           validationMessage={titleErrorMessage}
           isInvalid={Boolean(titleErrorMessage)}
+          inputHeight={40}
         />
         <TextInputField
           label={message('uploadVideoPanel.fields.description.title')}
           placeholder={message('uploadVideoPanel.fields.description.placeholder')}
           value={descriptionValue}
           onChange={({ target }) => onDescriptionChange(target.value)}
+          inputHeight={40}
         />
         <Pane>
           <Heading size={400} marginBottom={8}>
@@ -92,18 +109,40 @@ const UploadVideoPanel = ({ closePanel }) => {
             value={fileValue}
             placeholder={message('uploadVideoPanel.fields.videoFile.placeholder')}
             onChange={(files) => onFileChange(files[0])}
+            height={40}
           />
+          {fileErrorMessage && (
+            <Pane
+              display='flex'
+              marginTop={8}
+            >
+              <ErrorIcon
+                marginRight={8}
+                color='danger'
+                size={14}
+              />
+              <Text size={300} color='danger'>{fileErrorMessage}</Text>
+            </Pane>
+          )}
         </Pane>
         <Pane marginTop={35}>
           <Button
             appearance='primary'
             intent='success'
             marginRight={15}
+            size='large'
+            isLoading={isUploadingVideo}
             onClick={onFormSave}
           >
             {message('uploadVideoPanel.buttons.save')}
           </Button>
-          <Button onClick={onFormReset}>{message('uploadVideoPanel.buttons.cancel')}</Button>
+          <Button
+            onClick={onFormReset}
+            size='large'
+            disabled={isUploadingVideo}
+          >
+            {message('uploadVideoPanel.buttons.cancel')}
+          </Button>
         </Pane>
       </Pane>
     </SideSheet>

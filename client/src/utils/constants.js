@@ -8,8 +8,7 @@ export const path = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   SIGN_OUT: '/sign-out',
-  GALLERY: '/gallery',
-  PROFILE: '/profile',
+  GALLERY: '/',
 };
 
 export const statusCodes = {

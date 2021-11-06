@@ -85,6 +85,7 @@ const SignIn = () => {
             onChange={({ target }) => onEmailChange(target.value)}
             validationMessage={emailErrorMessage}
             isInvalid={Boolean(emailErrorMessage)}
+            inputHeight={40}
           />
           <TextInputField
             type='password'
@@ -95,6 +96,7 @@ const SignIn = () => {
             onChange={({ target }) => onPasswordChange(target.value)}
             validationMessage={passwordErrorMessage}
             isInvalid={Boolean(passwordErrorMessage)}
+            inputHeight={40}
           />
         </Pane>
         <Pane>
@@ -104,12 +106,14 @@ const SignIn = () => {
             marginRight={15}
             isLoading={isSigningIn}
             onClick={onFormSave}
+            size='large'
           >
             {message('auth.buttons.save')}
           </Button>
           <Button
-            isLoading={isSigningIn}
+            disabled={isSigningIn}
             onClick={onFormReset}
+            size='large'
           >
             {message('auth.buttons.cancel')}
           </Button>

@@ -16,9 +16,13 @@ const history = createBrowserHistory();
 const routes = (
   <Router history={history}>
     <Switch>
+      <PrivateRoute
+        exact
+        path={path.GALLERY}
+        component={Gallery}
+      />
       <PublicRoute path={path.SIGN_UP} component={SignUp} />
       <PublicRoute path={path.SIGN_IN} component={SignIn} />
-      <PrivateRoute path={path.GALLERY} component={Gallery} />
     </Switch>
   </Router>
 );

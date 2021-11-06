@@ -1,4 +1,4 @@
-const userTypes = {
+const authTypes = {
   SIGN_UP: 'SIGN_UP',
   SIGN_UP_SUCCESS: 'SIGN_UP_SUCCESS',
   SIGN_UP_FAIL: 'SIGN_UP_FAIL',
@@ -8,4 +8,4 @@ const userTypes = {
   SIGN_OUT: 'SIGN_OUT',
 };
 
-export default userTypes;
+export default authTypes;
