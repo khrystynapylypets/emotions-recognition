@@ -16,7 +16,7 @@ export const AuthPanel = styled(Pane)`
 `;
 
 export const PrivateLayoutContainer = styled(Container)`
-  padding: 40px 0;
+  padding: 40px;
 `;
 
 export const StyledLink = styled(NavLink)`

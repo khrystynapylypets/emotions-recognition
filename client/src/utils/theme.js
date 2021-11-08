@@ -1,7 +1,7 @@
 const theme = {
-  containerWidth: '900px',
+  containerWidth: '1200px',
   authPanelWidth: '400px',
-  primaryColor: '#317159',
+  primaryColor: '#52BD95',
   primaryLightColor: '#f5fbf8',
   secondaryColor: '#c1c4d6',
   secondaryLightColor: '#f4f5f9',

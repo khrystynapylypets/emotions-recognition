@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import theme from '../../../utils/theme';
 import { Pane } from 'evergreen-ui';
+import theme from '../../../utils/theme';
 
 export const FlexPanel = styled(Pane)`
   display: flex;
@@ -15,9 +15,6 @@ export const StyledGalleryItem = styled(FlexPanel)`
   background-color: ${theme.panelColor};
 `;
 
-export const StyledVideo = styled.img`
+export const VideoWrapper = styled.div`
   height: 60%;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
 `;

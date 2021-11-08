@@ -13,10 +13,6 @@ const VideoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAnalyzed: {
-    type: Boolean,
-    default: false,
-  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

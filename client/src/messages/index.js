@@ -99,6 +99,12 @@ export default {
       },
     },
   },
+  videoDetailsPage: {
+    tabs: {
+      mainInfo: 'Main information',
+      analyzer: 'Analyzer',
+    },
+  },
   generalErrors: {
     unexpected: 'Something goes wrong. Please try again!',
     required: 'Value is required',
