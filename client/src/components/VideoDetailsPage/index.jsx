@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { map } from 'lodash';
-import { Pane } from 'evergreen-ui';
+import { Pane, Spinner } from 'evergreen-ui';
 import { StyledTabList, StyledTab, StyledTabName, StyledTabContentWrapper } from './style';
 import PrivateLayout from '../Layout/PrivateLayout';
 import MainInfo from './MainInfo';
 import Analyzer from './Analyzer';
 import { message } from '../../helpers';
+import { useGalleryListLoading } from '../../customHooks/useInitialLoading';
 
 const VideoDetailsPage = () => {
+  const galleryListIsLoading = useSelector((state) => state.gallery.isLoading);
   const [ selectedTabIndex, setSelectedTabIndex ] = useState(0);
   const tabs = [
     {
@@ -18,6 +21,16 @@ const VideoDetailsPage = () => {
       component: Analyzer,
     },
   ];
+
+  useGalleryListLoading();
+
+  if (galleryListIsLoading) {
+    return (
+      <Pane>
+        <Spinner marginX='auto' marginY={120} />
+      </Pane>
+    );
+  }
 
   const SelectedTabComponent = tabs[selectedTabIndex].component;
 
