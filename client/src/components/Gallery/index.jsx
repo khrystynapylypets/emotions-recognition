@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { isEmpty, map, sortBy } from 'lodash';
 import { Button, Pane, Text, PlusIcon, BoxIcon, Spinner } from 'evergreen-ui';
+
+import { useGalleryListLoading } from '../../customHooks/useInitialLoading';
 import PrivateLayout from '../Layout/PrivateLayout';
 import UploadVideoPanel from '../UploadVideoPanel';
 import GalleryItem from './GalleryItem';
-import galleryActions from '../../redux/actions/gallery';
 import { message } from '../../helpers';
 
 const Gallery = () => {
-  const dispatch = useDispatch();
-
   const galleryItems = useSelector((state) => state.gallery.list);
-  const galleryListQueriedAt = useSelector((state) => state.gallery.queriedAt);
   const galleryListIsLoading = useSelector((state) => state.gallery.isLoading);
   const videoIsDeleting = useSelector((state) => state.gallery.isDeleting);
 
   const [ isUploadVideoPanelVisible, setUploadVideoPanelVisible ] = useState(false);
 
-  useEffect(() => {
-    // initial loading
-    if (!galleryListQueriedAt && !galleryListIsLoading) {
-      dispatch(galleryActions.getVideosAction());
-    }
-  }, [ galleryListQueriedAt ]);
+  useGalleryListLoading();
 
   const renderContent = () => {
     if (galleryListIsLoading || videoIsDeleting) {
@@ -38,10 +31,9 @@ const Gallery = () => {
       return (
         <Pane
           display='flex'
-          justifyContent='center'
           alignItems='center'
           flexDirection='column'
-          padding={100}
+          paddingY={100}
         >
           <BoxIcon
             marginBottom={10}
@@ -79,13 +71,14 @@ const Gallery = () => {
       )}
       <Pane
         width='100%'
-        padding={25}
+        paddingY={25}
+        paddingX={150}
         minHeight={500}
       >
         <Pane
           display='flex'
           justifyContent='flex-end'
-          marginBottom={40}
+          marginBottom={50}
         >
           <Button
             appearance='primary'

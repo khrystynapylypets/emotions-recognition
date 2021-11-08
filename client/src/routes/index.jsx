@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import SignUp from '../components/SignUp';
 import SignIn from '../components/SignIn';
 import Gallery from '../components/Gallery';
+import VideoDetailsPage from '../components/VideoDetailsPage';
 
 import { path } from '../utils/constants';
 
@@ -21,8 +22,21 @@ const routes = (
         path={path.GALLERY}
         component={Gallery}
       />
-      <PublicRoute path={path.SIGN_UP} component={SignUp} />
-      <PublicRoute path={path.SIGN_IN} component={SignIn} />
+      <PrivateRoute
+        exact
+        path={path.VIDEO_DETAILS_PAGE}
+        component={VideoDetailsPage}
+      />
+      <PublicRoute
+        exact
+        path={path.SIGN_UP}
+        component={SignUp}
+      />
+      <PublicRoute
+        exact
+        path={path.SIGN_IN}
+        component={SignIn}
+      />
     </Switch>
   </Router>
 );

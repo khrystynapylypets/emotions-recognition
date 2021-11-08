@@ -18,9 +18,9 @@ class VideoDataAccess {
     return Video.create(videoData);
   };
 
-  findVideosDataByUserId = (userId) => Video.find({ userId });
+  findVideosDataByUserId = (userId) => Video.find({ userId }).catch(() => []);
 
-  findVideoData = (id) => Video.findOne({ _id: id });
+  findVideoData = (id) => Video.findById(id);
 
   deleteVideoData = async (id) => {
     const existingRecord = await this.findVideoData(id);
@@ -35,6 +35,5 @@ class VideoDataAccess {
     return Video.deleteOne({ _id: id });
   };
 }
-
 
 export default VideoDataAccess;

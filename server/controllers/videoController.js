@@ -1,5 +1,6 @@
 import { map } from 'lodash';
 import VideoService from '../services/videoService';
+import AnalyzedVideoMetadataService from '../services/analyzedVideoMetadataService';
 
 export const uploadVideo = async (req, res, next) => {
   try {
@@ -18,7 +19,7 @@ export const uploadVideo = async (req, res, next) => {
           name: videoData.name,
           description: videoData.description,
           url: videoData.url,
-          isAnalyzed: videoData.isAnalyzed,
+          isAnalyzed: false,
           userId: videoData.userId,
         },
       });
@@ -32,20 +33,26 @@ export const getAllVideos = async (req, res, next) => {
     const userId = req.userId;
 
     const videoServiceInstance = new VideoService();
-    const list = await videoServiceInstance.getAllVideosByUserId(userId);
+    const analyzedVideoMetadataServiceInstance = new AnalyzedVideoMetadataService();
+
+    const list = await videoServiceInstance.getVideosByUserId(userId);
+
+    const videosData = await Promise.all(map(list, async (videoData) => {
+      const analyzedMetadata = await analyzedVideoMetadataServiceInstance.getAnalyzedDataByVideoId(videoData._id);
+
+      return {
+        id: videoData._id,
+        name: videoData.name,
+        description: videoData.description,
+        url: videoData.url,
+        isAnalyzed: analyzedMetadata > 0,
+        userId: videoData.userId,
+      },
+    }));
 
     res
       .status(200)
-      .send({
-        videosData: map(list, (videoData) => ({
-          id: videoData._id,
-          name: videoData.name,
-          description: videoData.description,
-          url: videoData.url,
-          isAnalyzed: videoData.isAnalyzed,
-          userId: videoData.userId,
-        })),
-      });
+      .send({ videosData });
   } catch (error) {
     next(error);
   }

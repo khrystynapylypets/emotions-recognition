@@ -31,7 +31,7 @@ class VideoService {
     });
   };
 
-  getAllVideosByUserId = (userId) => this.videoDataAccessInstance.findVideosDataByUserId(userId);
+  getVideosByUserId = (userId) => this.videoDataAccessInstance.findVideosDataByUserId(userId);
 
   deleteVideo = async (id) => this.videoDataAccessInstance.deleteVideoData(id);
 }

@@ -9,6 +9,7 @@ export const path = {
   SIGN_UP: '/sign-up',
   SIGN_OUT: '/sign-out',
   GALLERY: '/',
+  VIDEO_DETAILS_PAGE: '/:id',
 };
 
 export const statusCodes = {
