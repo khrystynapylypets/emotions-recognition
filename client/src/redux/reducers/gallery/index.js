@@ -72,7 +72,7 @@ export const galleryReducer = (prevState = initialState, action) => {
       };
     case authTypes.SIGN_OUT:
       return {
-        ...prevState,
+        ...initialState,
       };
     default:
       return prevState;

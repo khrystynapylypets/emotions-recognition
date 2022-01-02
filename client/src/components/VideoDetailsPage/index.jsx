@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { map } from 'lodash';
-import { Pane, Spinner } from 'evergreen-ui';
+import { find, map } from 'lodash';
+import { Pane, Paragraph, Spinner } from 'evergreen-ui';
 import { StyledTabList, StyledTab, StyledTabName, StyledTabContentWrapper } from './style';
 import PrivateLayout from '../Layout/PrivateLayout';
 import MainInfo from './MainInfo';
-import Analyzer from './Analyzer';
+import AnalyzerWrapper from './AnalyzerWrapper';
 import { message } from '../../helpers';
 import { useGalleryListLoading } from '../../customHooks/useInitialLoading';
+import { useParams } from 'react-router';
 
 const VideoDetailsPage = () => {
-  const galleryListIsLoading = useSelector((state) => state.gallery.isLoading);
+  const { id } = useParams();
   const [ selectedTabIndex, setSelectedTabIndex ] = useState(0);
-  const tabs = [
-    {
-      displayName: message('videoDetailsPage.tabs.mainInfo'),
-      component: MainInfo,
-    }, {
-      displayName: message('videoDetailsPage.tabs.analyzer'),
-      component: Analyzer,
-    },
-  ];
 
-  useGalleryListLoading();
+  const galleryList = useSelector((state) => state.gallery.list);
+  const videoDetails = find(galleryList, { id });
+
+  const { isLoading: galleryListIsLoading, queriedAt: galleryListQueriedAt } = useGalleryListLoading();
 
   if (galleryListIsLoading) {
     return (
@@ -32,6 +27,21 @@ const VideoDetailsPage = () => {
     );
   }
 
+  if (!videoDetails && galleryListQueriedAt) {
+    return (
+      <Paragraph>Cannot find content.</Paragraph>
+    );
+  }
+
+  const tabs = [
+    {
+      displayName: message('videoDetailsPage.tabs.mainInfo'),
+      component: MainInfo,
+    }, {
+      displayName: message('videoDetailsPage.tabs.analyzer'),
+      component: AnalyzerWrapper,
+    },
+  ];
   const SelectedTabComponent = tabs[selectedTabIndex].component;
 
   return (
@@ -58,7 +68,7 @@ const VideoDetailsPage = () => {
           ))}
         </StyledTabList>
         <StyledTabContentWrapper>
-          <SelectedTabComponent />
+          <SelectedTabComponent {...videoDetails} />
         </StyledTabContentWrapper>
       </Pane>
     </PrivateLayout>

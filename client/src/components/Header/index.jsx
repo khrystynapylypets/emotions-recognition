@@ -18,7 +18,7 @@ const Header = () => {
     dispatch(authActions.signOut());
     removeAccessToken();
 
-    history.push(path.SIGN_IN);
+    history.push(path.SIGN_OUT);
   };
 
   return (

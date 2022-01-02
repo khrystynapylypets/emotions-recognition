@@ -104,6 +104,15 @@ export default {
       mainInfo: 'Main information',
       analyzer: 'Analyzer',
     },
+    analyzer: {
+      framesPerSec: {
+        label: 'Вкажіть, будь ласка, кількість кадрів (від 1 до 10)',
+        errorMessage: 'Вказане число не в діапазоні від 1 до 10.',
+      },
+      buttons: {
+        analyze: 'Проаналізувати відео',
+      },
+    },
   },
   generalErrors: {
     unexpected: 'Something goes wrong. Please try again!',

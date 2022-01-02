@@ -11,12 +11,11 @@ import { message } from '../../helpers';
 
 const Gallery = () => {
   const galleryItems = useSelector((state) => state.gallery.list);
-  const galleryListIsLoading = useSelector((state) => state.gallery.isLoading);
   const videoIsDeleting = useSelector((state) => state.gallery.isDeleting);
 
   const [ isUploadVideoPanelVisible, setUploadVideoPanelVisible ] = useState(false);
 
-  useGalleryListLoading();
+  const { isLoading: galleryListIsLoading } = useGalleryListLoading();
 
   const renderContent = () => {
     if (galleryListIsLoading || videoIsDeleting) {
