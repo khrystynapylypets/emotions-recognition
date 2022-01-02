@@ -47,7 +47,7 @@ export const getAllVideos = async (req, res, next) => {
         url: videoData.url,
         isAnalyzed: analyzedMetadata > 0,
         userId: videoData.userId,
-      },
+      };
     }));
 
     res
