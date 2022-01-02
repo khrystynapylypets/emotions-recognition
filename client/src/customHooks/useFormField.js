@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useTextField = ({ initialValue, resetValue, validationFunction = null }) => {
+export const useTextField = ({ initialValue, resetValue = initialValue, validationFunction = null }) => {
   const [ value, setValue ] = useState(initialValue);
   const [ errorMessage, setErrorMessage ] = useState(null);
 

@@ -4,13 +4,18 @@ import galleryActions from '../redux/actions/gallery';
 
 export const useGalleryListLoading = () => {
   const dispatch = useDispatch();
-  const galleryListQueriedAt = useSelector((state) => state.gallery.queriedAt);
-  const galleryListIsLoading = useSelector((state) => state.gallery.isLoading);
+  const queriedAt = useSelector((state) => state.gallery.queriedAt);
+  const isLoading = useSelector((state) => state.gallery.isLoading);
 
   useEffect(() => {
     // initial loading
-    if (!galleryListQueriedAt && !galleryListIsLoading) {
+    if (!queriedAt && !isLoading) {
       dispatch(galleryActions.getVideosAction());
     }
-  }, [ galleryListQueriedAt ]);
+  }, [ queriedAt, isLoading ]);
+
+  return {
+    isLoading,
+    queriedAt,
+  };
 };

@@ -14,7 +14,6 @@ export const path = {
 
 export const statusCodes = {
   UNAUTHORIZED: 401,
-  OK: 200,
 };
 
 export const ERROR_MESSAGE_DISPLAYING_DURATION = 10;

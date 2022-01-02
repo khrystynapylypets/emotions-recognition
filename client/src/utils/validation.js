@@ -40,3 +40,13 @@ export const uploadVideoValidator = {
   'title': checkIfValueIsEmpty,
   'file': checkIfValueIsEmpty,
 };
+
+export const analyzerValidator = {
+  'framesPerSec': (value) => {
+    if (value >= 1 && value <= 10) {
+      return null;
+    }
+
+    return message('videoDetailsPage.analyzer.framesPerSec.errorMessage');
+  },
+};
