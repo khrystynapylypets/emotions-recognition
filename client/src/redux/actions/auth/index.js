@@ -2,8 +2,8 @@ import { get } from 'lodash';
 import { toaster as addMessage } from 'evergreen-ui';
 import types from './types';
 import api from './api';
-import { message, setAccessToken } from '../../../helpers';
-import { ERROR_MESSAGE_DISPLAYING_DURATION } from '../../../utils/constants';
+import { message, removeAccessToken, setAccessToken } from '../../../helpers';
+import { ERROR_MESSAGE_DISPLAYING_DURATION, statusCodes } from '../../../utils/constants';
 
 const signUp = () => ({
   type: types.SIGN_UP,
@@ -33,6 +33,12 @@ const signOut = () => ({
   type: types.SIGN_OUT,
 });
 
+const signOutAction = () => (dispatch) =>
+{
+  dispatch(signOut());
+  removeAccessToken();
+};
+
 const signUpAction = (userData) => (dispatch) =>
 {
   dispatch(signUp());
@@ -47,10 +53,17 @@ const signUpAction = (userData) => (dispatch) =>
       return result;
     })
     .catch((error) => {
+      dispatch(signUpFail());
       const errorMessage = get(error, 'response.data.message',
         message('generalErrors.unexpected'));
 
-      dispatch(signUpFail());
+      if (error.response.status === statusCodes.UNAUTHORIZED ) {
+        dispatch(signOutAction());
+        addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
+
+        return Promise.reject(error);
+      }
+
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
       return Promise.reject(error);
     });
@@ -70,10 +83,17 @@ const signInAction = (userData) => (dispatch) =>
       return result;
     })
     .catch((error) => {
+      dispatch(signInFail());
       const errorMessage = get(error, 'response.data.message',
         message('generalErrors.unexpected'));
 
-      dispatch(signInFail());
+      if (error.response.status === statusCodes.UNAUTHORIZED ) {
+        dispatch(signOutAction());
+        addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
+
+        return Promise.reject(error);
+      }
+
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
 
       return Promise.reject(error);
@@ -83,5 +103,5 @@ const signInAction = (userData) => (dispatch) =>
 export default {
   signUpAction,
   signInAction,
-  signOut,
+  signOutAction,
 };

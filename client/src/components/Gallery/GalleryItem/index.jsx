@@ -61,7 +61,10 @@ const GalleryItem = ({ name, url, isAnalyzed, id }) => {
           : <Badge color='red'>{message('gallery.label.notAnalyzed')}</Badge>
         }
         <Pane>
-          <Tooltip content={message('gallery.item.settings.detailsPage')} position={Position.LEFT}>
+          <Tooltip
+            content={message('gallery.item.settings.detailsPage')}
+            position={Position.LEFT}
+          >
             <IconButton
               icon={EditIcon}
               marginRight={5}

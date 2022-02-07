@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { envVariables } from '../configurations';
-import { getAccessToken, removeAccessToken } from '../helpers';
-import { statusCodes, path } from '../utils/constants';
+import { getAccessToken } from '../helpers';
 
 export const API = axios.create({
   baseURL: `${envVariables.API_URL}/api`,
@@ -23,18 +22,3 @@ AuthAPI.interceptors.request.use((config) => {
   config.headers['access-token'] = token || '';
   return config;
 });
-
-AuthAPI.interceptors.response.use((response) => response, (error) => {
-  const { config: originalRequest, response } = error;
-
-  if (response.status === statusCodes.UNAUTHORIZED ) {
-    removeAccessToken();
-    history.push(path.SIGN_OUT);
-
-    return;
-  }
-
-  return axios(originalRequest);
-});
-
-

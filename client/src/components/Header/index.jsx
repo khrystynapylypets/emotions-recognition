@@ -6,7 +6,7 @@ import { StyledLink } from '../../styledComponents';
 
 import theme from '../../utils/theme';
 import { path } from '../../utils/constants';
-import { message, removeAccessToken } from '../../helpers';
+import { message } from '../../helpers';
 
 import authActions from '../../redux/actions/auth';
 
@@ -15,8 +15,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const logOut = () => {
-    dispatch(authActions.signOut());
-    removeAccessToken();
+    dispatch(authActions.signOutAction());
 
     history.push(path.SIGN_OUT);
   };

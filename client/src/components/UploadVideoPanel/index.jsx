@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import {
   SideSheet, Paragraph, Pane, Heading, TextInputField, Button, FilePicker, Text, ErrorIcon,
 } from 'evergreen-ui';
@@ -8,8 +9,10 @@ import theme from '../../utils/theme';
 import { uploadVideoValidator } from '../../utils/validation';
 import { message } from '../../helpers';
 import galleryActions from '../../redux/actions/gallery';
+import { path, statusCodes } from '../../utils/constants';
 
 const UploadVideoPanel = ({ closePanel }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const isUploadingVideo = useSelector((state) => state.gallery.isUploadingVideo);
 
@@ -61,7 +64,13 @@ const UploadVideoPanel = ({ closePanel }) => {
       name: titleValue,
       description: descriptionValue,
       videoFile: fileValue,
-    })).then(() => closePanel()).catch();
+    }))
+      .then(() => closePanel())
+      .catch((error) => {
+        if (error.response.status === statusCodes.UNAUTHORIZED ) {
+          history.push(path.SIGN_OUT);
+        }
+      });
   };
 
   return (

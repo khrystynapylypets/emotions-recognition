@@ -4,31 +4,55 @@ import { Pane, Table, UnorderedList, ListItem, Heading } from 'evergreen-ui';
 import { Line, Pie, Bar } from 'react-chartjs-2';
 import DetailsPopup from './DetailsPopup';
 import theme from '../../../utils/theme';
+import { message } from '../../../helpers';
+
+const emotionsConst = {
+  ANGRY: 'angry',
+  HAPPY: 'happy',
+  SAD: 'sad',
+  NEUTRAL: 'neutral',
+  SURPRISED: 'surprised',
+  DISGUSTED: 'disgusted',
+  FEARFUL: 'fearful',
+  NO: 'no',
+}
+
+const EMOTIONS = {
+  [emotionsConst.ANGRY]:
+    { displayName: message('emotions.angry.displayName'), key: 1, },
+  [emotionsConst.HAPPY]:
+    { displayName: message('emotions.happy.displayName'), key: 6 },
+  [emotionsConst.SAD]:
+    { displayName: message('emotions.sad.displayName'), key: 3 },
+  [emotionsConst.NEUTRAL]:
+    { displayName: message('emotions.neutral.displayName'), key: 4 },
+  [emotionsConst.SURPRISED]:
+    { displayName: message('emotions.surprised.displayName'), key: 5 },
+  [emotionsConst.DISGUSTED]:
+    { displayName: message('emotions.disgusted.displayName'), key: 0 },
+  [emotionsConst.FEARFUL]:
+    { displayName: message('emotions.fearful.displayName'), key: 2 },
+  [emotionsConst.NO]:
+    { displayName: message('emotions.no.displayName'), key: -1 },
+};
+
+const KEYS = {
+  '-1': emotionsConst.NO,
+  '0': emotionsConst.DISGUSTED,
+  '1': emotionsConst.ANGRY,
+  '2': emotionsConst.FEARFUL,
+  '3': emotionsConst.SAD,
+  '4': emotionsConst.NEUTRAL,
+  '5': emotionsConst.SURPRISED,
+  '6': emotionsConst.HAPPY,
+};
 
 const Charts = ({ analyzedData }) => {
   const [ isDetailsPopupOpened, setIsDetailsPopupOpened ] = useState(false);
   const [ selectedTime, setSelectedTime ] = useState(false);
 
-  const EMOTIONS = {
-    angry: { displayName: 'Злість', key: 1, },
-    happy: { displayName: 'Радість', key: 6 },
-    sad: { displayName: 'Сум', key: 3 },
-    neutral: { displayName: 'Спокій', key: 4 },
-    surprised: { displayName: 'Здивування', key: 5 },
-    disgusted: { displayName: 'Огида', key: 0 },
-    fearful: { displayName: 'Страх', key: 2 },
-    no: { displayName: 'Відсутнє обличчя', key: -1 },
-  };
-
-  const KEYS = {
-    '-1': 'no',
-    '0': 'disgusted',
-    '1': 'angry',
-    '2': 'fearful',
-    '3': 'sad',
-    '4': 'neutral',
-    '5': 'surprised',
-    '6': 'happy',
+  if (isEmpty(analyzedData)) {
+    return null;
   }
 
   const getMostAccurateEmotion = (emotions) => {
@@ -37,7 +61,7 @@ const Charts = ({ analyzedData }) => {
 
     const maxValue = max(emotionsValues);
 
-    return find(emotionsKeys, (key) => emotions[key] === maxValue) || 'no';
+    return find(emotionsKeys, (key) => emotions[key] === maxValue) || emotionsConst.NO;
   };
 
   const convertSecondsIntoData = (seconds) => {
@@ -48,14 +72,33 @@ const Charts = ({ analyzedData }) => {
     return new Date(seconds * 1000).toISOString().substr(11, 8);
   };
 
-  if (isEmpty(analyzedData)) {
-    return null;
+  const getEmotionsPerVideo = () => {
+    let result = {};
+    const data = map(analyzedData, ({ emotions }) => getMostAccurateEmotion(emotions));
+
+    forEach(data, (key) => {
+      if (!result[key]) {
+        result[key] = 1;
+
+        return;
+      }
+
+      result[key] = result[key] + 1;
+    });
+
+    return result;
+  };
+
+  const getPercentsFromCounts = (counts) => {
+    const totalCount = sum(counts);
+
+    return map(counts, (count) => Math.round((count * 100)/totalCount));
   }
 
   const data1 = {
     labels: map(analyzedData, 'currentTime'),
     datasets: [{
-      label: 'Емоції протягом відео',
+      label: message('videoDetailsPage.analyzer.charts.chart1.label'),
       data: map(analyzedData, ({ emotions }) => {
         const key = getMostAccurateEmotion(emotions);
 
@@ -69,7 +112,6 @@ const Charts = ({ analyzedData }) => {
       borderColor: theme.primaryColor,
     }],
   };
-
   const options1 = {
     scales: {
       yAxes: [
@@ -108,7 +150,10 @@ const Charts = ({ analyzedData }) => {
           const displayName = EMOTIONS[emotionKey].displayName;
           const percent = Math.round(data.emotions[emotionKey] * 100);
 
-          return `Емоція "${displayName}" - ${percent}%`;
+          return message(
+            'videoDetailsPage.analyzer.charts.emotionsLabel',
+            { displayName, percent }
+          );
         },
         title: (dataset) => {
           const { label: time } = dataset[0];
@@ -138,37 +183,12 @@ const Charts = ({ analyzedData }) => {
       },
     },
   };
-
-  const getEmotionsPerVideo = () => {
-    let result = {};
-    const data = map(analyzedData, ({ emotions }) => getMostAccurateEmotion(emotions));
-
-    forEach(data, (key) => {
-      if (!result[key]) {
-        result[key] = 1;
-
-        return;
-      }
-
-      result[key] = result[key] + 1;
-    });
-
-    return result;
-  };
-
-  const getPercentsFromCounts = (counts) => {
-    const totalCount = sum(counts);
-
-    return map(counts, (count) => Math.round((count * 100)/totalCount));
-  }
-
   const emotionsPerVideo = getEmotionsPerVideo();
-
   const data2 = {
     labels: keys(emotionsPerVideo).map((emotionKey) => EMOTIONS[emotionKey].displayName),
     datasets: [
       {
-        label: 'Гістограма',
+        label: message('videoDetailsPage.analyzer.charts.chart2.label'),
         data: getPercentsFromCounts(values(emotionsPerVideo)),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -197,7 +217,7 @@ const Charts = ({ analyzedData }) => {
     <>
       <Pane marginBottom={50}>
         <Heading size={400} marginTop={16}>
-          Список можливих варіантів
+          {message('videoDetailsPage.analyzer.charts.possibleEmotions')}
         </Heading>
         <UnorderedList>
           {map(values(EMOTIONS), ({ displayName }) => <ListItem>{displayName}</ListItem> )}
@@ -206,9 +226,15 @@ const Charts = ({ analyzedData }) => {
       <Pane marginBottom={50}>
         <Table>
           <Table.Head>
-            <Table.TextHeaderCell>Час</Table.TextHeaderCell>
-            <Table.TextHeaderCell>Емоція</Table.TextHeaderCell>
-            <Table.TextHeaderCell>Точність розрізнавання</Table.TextHeaderCell>
+            <Table.TextHeaderCell>
+              {message('videoDetailsPage.analyzer.charts.table.header1')}
+            </Table.TextHeaderCell>
+            <Table.TextHeaderCell>
+              {message('videoDetailsPage.analyzer.charts.table.header2')}
+            </Table.TextHeaderCell>
+            <Table.TextHeaderCell>
+              {message('videoDetailsPage.analyzer.charts.table.header3')}
+            </Table.TextHeaderCell>
           </Table.Head>
           <Table.VirtualBody height={240}>
             {analyzedData.map(({ emotions, currentTime: seconds }, index) => {
@@ -219,7 +245,7 @@ const Charts = ({ analyzedData }) => {
 
               let displayName, percent;
 
-              if (currentEmotionKey === 'no') {
+              if (currentEmotionKey === emotionsConst.NO) {
                 percent = 0;
                 displayName = 'Неможливо визначити емоцію';
               } else {

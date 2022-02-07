@@ -66,12 +66,10 @@ class Analyzer {
   }
 
   analyzeImage = async (image) => {
-    const detection = await faceapi
+    return faceapi
       .detectAllFaces(image)
       .withFaceLandmarks()
       .withFaceExpressions();
-
-    return detection;
   };
 }
 
