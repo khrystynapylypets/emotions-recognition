@@ -73,8 +73,6 @@ const AnalyzerWrapper = ({ url }) => {
       const result = await Promise.all(map(images, async ({ imageObj, currentTime }) => {
         const analyzed = await analyzerInstance.analyzeImage(imageObj);
 
-        console.log(analyzed);
-
         return {
           imageFrame: imageObj.src,
           emotions: analyzed[0] ? analyzed[0].expressions : null,
@@ -87,7 +85,7 @@ const AnalyzerWrapper = ({ url }) => {
     } catch {
       setIsAnalyzing(false);
       addMessage.danger(
-        'Something went wrong, please try again.',
+        message('generalErrors.unexpected'),
         { duration: ERROR_MESSAGE_DISPLAYING_DURATION },
       );
     }

@@ -1,9 +1,10 @@
+import { get } from 'lodash';
 import types from './types';
 import api from './api';
-import { get } from 'lodash';
+import authTypes from '../auth/types';
 import { message } from '../../../helpers';
 import { toaster as addMessage } from 'evergreen-ui';
-import { ERROR_MESSAGE_DISPLAYING_DURATION } from '../../../utils/constants';
+import { ERROR_MESSAGE_DISPLAYING_DURATION, statusCodes } from '../../../utils/constants';
 
 const uploadVideo = () => ({
   type: types.UPLOAD_VIDEO,
@@ -68,10 +69,17 @@ const uploadVideoAction = (videoData) => (dispatch) =>
       return result;
     })
     .catch((error) => {
+      dispatch(uploadVideoFail());
       const errorMessage = get(error, 'response.data.message',
         message('generalErrors.unexpected'));
 
-      dispatch(uploadVideoFail());
+      if (error.response.status === statusCodes.UNAUTHORIZED ) {
+        dispatch(authTypes.signOutAction());
+        addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
+
+        return Promise.reject(error);
+      }
+
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
 
       return Promise.reject(error);
@@ -89,10 +97,17 @@ const getVideosAction = () => (dispatch) =>
       dispatch(getVideosSuccess(videosData));
     })
     .catch((error) => {
+      dispatch(getVideosFail());
       const errorMessage = get(error, 'response.data.message',
         message('generalErrors.unexpected'));
 
-      dispatch(getVideosFail());
+      if (error.response.status === statusCodes.UNAUTHORIZED ) {
+        dispatch(authTypes.signOutAction());
+        addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
+
+        return Promise.reject(error);
+      }
+
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
     });
 };
@@ -107,10 +122,18 @@ const deleteVideoAction = (id, name) => (dispatch) =>
       addMessage.success(message('uploadVideoPanel.request.messages.deletingSuccess', { name }));
     })
     .catch((error) => {
+      dispatch(deleteVideoFail());
       const errorMessage = get(error, 'response.data.message',
         message('generalErrors.unexpected'));
 
-      dispatch(deleteVideoFail());
+
+      if (error.response.status === statusCodes.UNAUTHORIZED ) {
+        dispatch(authTypes.signOutAction());
+        addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
+
+        return Promise.reject(error);
+      }
+
       addMessage.danger(errorMessage, { duration: ERROR_MESSAGE_DISPLAYING_DURATION });
     });
 };

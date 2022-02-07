@@ -112,10 +112,51 @@ export default {
       buttons: {
         analyze: 'Проаналізувати відео',
       },
+      charts: {
+        possibleEmotions: 'List of possible emotions',
+        table: {
+          header1: 'Time',
+          header2: 'Emotion',
+          header3: 'Recognition accuracy',
+        },
+        emotionsLabel: 'Emotion "{displayName}" - {percent}%',
+        chart1: {
+          label: 'Emotions during the video',
+        },
+        chart2: {
+          label: 'Histogram',
+        },
+      },
     },
   },
   generalErrors: {
     unexpected: 'Something goes wrong. Please try again!',
     required: 'Value is required',
   },
+  emotions: {
+    angry: {
+      displayName: 'Angry',
+    },
+    happy: {
+      displayName: 'Happy',
+    },
+    sad: {
+      displayName: 'Sad',
+    },
+    neutral: {
+      displayName: 'Neutral',
+    },
+    surprised: {
+      displayName: 'Surprised',
+    },
+    disgusted: {
+      displayName: 'Disgusted',
+    },
+    fearful: {
+      displayName: 'Fearful',
+    },
+    no: {
+      displayName: 'No face',
+    },
+  }
 };
